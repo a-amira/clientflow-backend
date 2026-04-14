@@ -1,2 +1,76 @@
+# Python
+__pycache__/
+
+*.py[cod]
+
+*$py.class
+
+*.so
+
+.Python
+
+build/
+
+develop-eggs/
+
+dist/
+
+downloads/
+
+eggs/
+
+.eggs/
+
+lib/
+
+lib64/
+
+parts/
+
+sdist/
+
+var/
+wheels/
+*.egg-info/
+
+.installed.cfg
+
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+# Environment variables
 .env
-.env
+.env.local
+.env.*.local
+# Database
+db.sqlite3
+*.db
+# IDE
+vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+# Media files
+media/
+/static/
+staticfiles/
+# Logs
+*.log
+logs/
+# Django
+*.pyc
+local_settings.py
+/static
+/media
+# Temporary files
+*.tmp
+*.bak
