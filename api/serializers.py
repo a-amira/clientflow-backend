@@ -44,7 +44,7 @@ class ProjectListSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Project
-        fields = ['id', 'title', 'status', 'progress_percentage', 'quote_amount', 'amount_paid', 'client_name', 'created_at']
+        fields = ['id', 'company' , 'client' ,'title', 'status', 'progress_percentage', 'quote_amount', 'amount_paid', 'client_name', 'created_at']
     
     def get_client_name(self, obj):
         return f"{obj.client.first_name} {obj.client.last_name}"

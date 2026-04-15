@@ -27,6 +27,9 @@ class CompanyViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Company.objects.filter(owner=self.request.user)
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+    
 
 
 # =============================================
@@ -83,7 +86,8 @@ class ProjectViewSet(viewsets.ModelViewSet):
             project.save()
             return Response({'status': 'status updated'})
         return Response({'error': 'invalid status'}, status=status.HTTP_400_BAD_REQUEST)
-
+    def perform_create(self, serializer):
+        serializer.save()
 
 # =============================================
 # MILESTONE VIEWSET
