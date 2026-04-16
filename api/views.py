@@ -12,6 +12,7 @@ from api.serializers import (
     NotificationSerializer, ActivitySerializer
 )
 
+from api.permissions import IsCompanyOwner, IsCompanyMember, IsProjectOwner, IsDocumentOwner, ReadOnly
 
 # =============================================
 # COMPANY VIEWSET
@@ -20,7 +21,7 @@ from api.serializers import (
 class CompanyViewSet(viewsets.ModelViewSet):
     queryset = Company.objects.all()
     serializer_class = CompanySerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated,IsCompanyOwner]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     search_fields = ['name', 'email']
     ordering_fields = ['created_at', 'name']
@@ -39,7 +40,7 @@ class CompanyViewSet(viewsets.ModelViewSet):
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsCompanyMember]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     search_fields = ['first_name', 'last_name', 'email']
     ordering_fields = ['created_at', 'last_name']
@@ -53,7 +54,7 @@ class ClientViewSet(viewsets.ModelViewSet):
 # =============================================
 
 class ProjectViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsProjectOwner]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['status', 'company']
     search_fields = ['title', 'description']
@@ -96,7 +97,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
 class MilestoneViewSet(viewsets.ModelViewSet):
     queryset = Milestone.objects.all()
     serializer_class = MilestoneSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsCompanyMember]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['project', 'status']
     ordering_fields = ['order', 'planned_date']
@@ -122,7 +123,7 @@ class MilestoneViewSet(viewsets.ModelViewSet):
 class DocumentViewSet(viewsets.ModelViewSet):
     queryset = Document.objects.all()
     serializer_class = DocumentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsDocumentOwner]
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['project', 'doc_type']
     search_fields = ['title']
@@ -138,7 +139,7 @@ class DocumentViewSet(viewsets.ModelViewSet):
 class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsCompanyMember]
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['project', 'event_type']
     search_fields = ['title']
@@ -155,7 +156,7 @@ class EventViewSet(viewsets.ModelViewSet):
 class PaymentViewSet(viewsets.ModelViewSet):
     queryset = Payment.objects.all()
     serializer_class = PaymentSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsCompanyMember]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['project', 'status', 'payment_method']
     ordering_fields = ['created_at', 'due_date', 'amount']
@@ -205,7 +206,7 @@ class NotificationViewSet(viewsets.ModelViewSet):
 class ActivityViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Activity.objects.all()
     serializer_class = ActivitySerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsCompanyMember, ReadOnly]
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['project', 'action']
     ordering_fields = ['created_at']
